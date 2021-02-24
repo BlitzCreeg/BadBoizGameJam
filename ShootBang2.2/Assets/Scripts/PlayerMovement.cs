@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = -9.81f;
 
     public float maxStamina = 200f;
+    public float staminaIncrease = 20f;
     public float stamina = 200f;
     public float staminaUsing = 0f;
     public float staminaJump = 40f;
@@ -21,8 +22,13 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 3f;
     public float pullUpHeight = 2f;
 
+    public float fov = 60;
+    public float sprintFov = 80;
+
     public Vector3 playerHeight;
     public Vector3 crouchHeight;
+    public Vector3 crouchCamScale;
+    public Vector3 standCamScale;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -36,9 +42,11 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerHeight = new Vector3(1f, 1f, 1f);
-        crouchHeight = new Vector3(1f, 0.6f, 1f);
+        crouchHeight = new Vector3(1f, 0.5f, 1f);
+        crouchCamScale = new Vector3(1f, 2f, 1f);
+        standCamScale = new Vector3(1f, 1f, 1f);
 
-        playerCam.fieldOfView = 70;
+        playerCam.fieldOfView = fov;
     }
 
     // Update is called once per frame
@@ -80,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 15f && player.transform.localScale == playerHeight)
+        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f && player.transform.localScale == playerHeight)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
@@ -89,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void ApplyGravity()
     {
-        if(!isClimbing)
+        if (!isClimbing)
         {
             velocity.y += gravity * Time.deltaTime;
 
@@ -101,10 +109,16 @@ public class PlayerMovement : MonoBehaviour
     public void Crouch()
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
             player.transform.localScale = crouchHeight;
+            playerCam.transform.localScale = crouchCamScale;
+        }
 
         if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
             player.transform.localScale = playerHeight;
+            playerCam.transform.localScale = standCamScale;
+        }
 
         if (player.transform.localScale == crouchHeight)
             speed = 4f;
@@ -119,29 +133,29 @@ public class PlayerMovement : MonoBehaviour
             speed = 18f;
             staminaUsing = 20f;
 
-            playerCam.fieldOfView = 90;
+            playerCam.fieldOfView = sprintFov;
         }
 
         if (stamina < 10f)
         {
             speed = 12f;
-            playerCam.fieldOfView = 70;
+            playerCam.fieldOfView = fov;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             speed = 12f;
             staminaUsing = 0f;
-            playerCam.fieldOfView = 70;
+            playerCam.fieldOfView = fov;
         }
     }
 
     public void StaminaUpdate()
     {
-        if (staminaUsing == 0f && stamina < 200f)
-            stamina += 20 * Time.deltaTime;
-        else if (stamina > 200f)
-            stamina = 200f;
+        if (staminaUsing == 0f && stamina < maxStamina)
+            stamina += staminaIncrease * Time.deltaTime;
+        else if (stamina > maxStamina)
+            stamina = maxStamina;
 
         if (staminaUsing != 0f)
             stamina -= staminaUsing * Time.deltaTime;
@@ -152,12 +166,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Climbing()
     {
-        if(Input.GetButton("Jump"))
+        if (Input.GetButton("Jump"))
         {
-            Debug.Log("try to climb");
             if (stamina >= 60)
             {
-                Debug.Log("climbed");
                 velocity.y = Mathf.Sqrt(pullUpHeight * -2f * gravity);
 
                 stamina -= staminaPullUp;
@@ -167,9 +179,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("ClimbableEdge"))
+        if (other.CompareTag("ClimbableEdge"))
         {
-            Debug.Log("can climb");
             canClimb = true;
         }
     }
@@ -178,8 +189,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("ClimbableEdge"))
         {
-            Debug.Log("cant climb anymore");
             canClimb = false;
         }
+    }
+
+    IEnumerator staminaCoolOff()
+    {
+        yield return new WaitForSeconds(2f);
     }
 }
