@@ -11,11 +11,15 @@ public class PlayerMovement : MonoBehaviour
 
     public float speed = 12f;
     public float gravity = -9.81f;
-    public float stamina = 100f;
+
+    public float maxStamina = 200f;
+    public float stamina = 200f;
     public float staminaUsing = 0f;
     public float staminaJump = 40f;
+    public float staminaPullUp = 60f;
 
     public float jumpHeight = 3f;
+    public float pullUpHeight = 2f;
 
     public Vector3 playerHeight;
     public Vector3 crouchHeight;
@@ -26,6 +30,8 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 velocity;
     bool isGrounded;
+    bool isClimbing;
+    bool canClimb;
 
     private void Awake()
     {
@@ -41,9 +47,12 @@ public class PlayerMovement : MonoBehaviour
         CheckIfGrounded();
         Jump();
         MovePlayer();
+        ApplyGravity();
         Crouch();
         Sprint();
         StaminaUpdate();
+        if (canClimb)
+            Climbing();
     }
 
     //Checks to see if player is grounded
@@ -76,10 +85,16 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
         }
+    }
 
-        velocity.y += gravity * Time.deltaTime;
+    public void ApplyGravity()
+    {
+        if(!isClimbing)
+        {
+            velocity.y += gravity * Time.deltaTime;
 
-        controller.Move(velocity * Time.deltaTime);
+            controller.Move(velocity * Time.deltaTime);
+        }
     }
 
     //Crouches the player by adjusting the height of the Player asset
@@ -123,15 +138,48 @@ public class PlayerMovement : MonoBehaviour
 
     public void StaminaUpdate()
     {
-        if (staminaUsing == 0f && stamina < 100f)
-            stamina += 5 * Time.deltaTime;
-        else if (stamina > 100f)
-            stamina = 100f;
+        if (staminaUsing == 0f && stamina < 200f)
+            stamina += 20 * Time.deltaTime;
+        else if (stamina > 200f)
+            stamina = 200f;
 
         if (staminaUsing != 0f)
             stamina -= staminaUsing * Time.deltaTime;
 
         if (stamina < 0f)
             stamina = 0f;
+    }
+
+    public void Climbing()
+    {
+        if(Input.GetButton("Jump"))
+        {
+            Debug.Log("try to climb");
+            if (stamina >= 60)
+            {
+                Debug.Log("climbed");
+                velocity.y = Mathf.Sqrt(pullUpHeight * -2f * gravity);
+
+                stamina -= staminaPullUp;
+            }
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("ClimbableEdge"))
+        {
+            Debug.Log("can climb");
+            canClimb = true;
+        }
+    }
+
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("ClimbableEdge"))
+        {
+            Debug.Log("cant climb anymore");
+            canClimb = false;
+        }
     }
 }
