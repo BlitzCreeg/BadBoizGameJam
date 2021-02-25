@@ -16,6 +16,10 @@ public class Pistol : MonoBehaviour
 
     public Camera playerCam;
 
+    public GameObject impactEffect;
+
+    public ParticleSystem muzzleFlash;
+
     // Update is called once per frame
     void Update()
     {
@@ -24,7 +28,7 @@ public class Pistol : MonoBehaviour
 
     public void CheckFire()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire) //take down away for fullauto
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             if (charge >= 10f)
@@ -35,6 +39,8 @@ public class Pistol : MonoBehaviour
     public void Shoot()
     {
         charge -= 10f;
+
+        muzzleFlash.Play();
 
         RaycastHit hit;
 
@@ -49,6 +55,7 @@ public class Pistol : MonoBehaviour
                 fighterHealth.TakeDamage(damage);
             }
 
+            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
         }
 
         if (!isRunning)
@@ -62,7 +69,7 @@ public class Pistol : MonoBehaviour
         else if (charge < 0f)
             charge = 0f;
         else
-            charge += 2f;
+            charge += 4f;
     }
 
     IEnumerator rechargeWait()

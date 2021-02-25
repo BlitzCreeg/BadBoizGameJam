@@ -6,7 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
 
     public CharacterController controller;
+
     public GameObject player;
+    public GameObject body;
+
     public Camera playerCam;
 
     public float speed = 12f;
@@ -25,11 +28,6 @@ public class PlayerMovement : MonoBehaviour
     public float fov = 60;
     public float sprintFov = 80;
 
-    public Vector3 playerHeight;
-    public Vector3 crouchHeight;
-    public Vector3 crouchCamScale;
-    public Vector3 standCamScale;
-
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
@@ -38,14 +36,10 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded;
     bool isClimbing;
     bool canClimb;
+    bool isCrouching;
 
     private void Awake()
     {
-        playerHeight = new Vector3(1f, 1f, 1f);
-        crouchHeight = new Vector3(1f, 0.5f, 1f);
-        crouchCamScale = new Vector3(1f, 2f, 1f);
-        standCamScale = new Vector3(1f, 1f, 1f);
-
         playerCam.fieldOfView = fov;
     }
 
@@ -88,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f && player.transform.localScale == playerHeight)
+        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f && !isCrouching)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
@@ -110,20 +104,17 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            player.transform.localScale = crouchHeight;
-            playerCam.transform.localScale = crouchCamScale;
+            isCrouching = true;
+            controller.height = 1.9f;
+            speed = 4f;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            player.transform.localScale = playerHeight;
-            playerCam.transform.localScale = standCamScale;
-        }
-
-        if (player.transform.localScale == crouchHeight)
-            speed = 4f;
-        else
+            isCrouching = false;
+            controller.height = 3.8f;
             speed = 12f;
+        }
     }
 
     public void Sprint()
