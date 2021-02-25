@@ -20,6 +20,12 @@ public class Pistol : MonoBehaviour
 
     public ParticleSystem muzzleFlash;
 
+    private void OnEnable()
+    {
+        isRunning = false;
+        StartCoroutine(rechargeWait());
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -77,7 +83,7 @@ public class Pistol : MonoBehaviour
         isRunning = true;
         yield return new WaitForSeconds(3);
 
-        while (charge < 50f)
+        while (charge < 50f || charge > 50f)
         {
             yield return new WaitForSeconds(1f);
             Recharge();

@@ -28,15 +28,28 @@ public class PlayerMovement : MonoBehaviour
     public float fov = 60;
     public float sprintFov = 80;
 
+    public float x;
+    public float z;
+
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
 
     Vector3 velocity;
-    bool isGrounded;
-    bool isClimbing;
-    bool canClimb;
-    bool isCrouching;
+
+    public bool isGrounded;
+    public bool canClimb;
+
+    // DANNNNNNNNNNNYYYYYYYYYYYYYSSSSSSSSSSSSSSSS BOOOOOOLLLLLLLLSSSSSSSSSSS
+    public bool isClimbing;
+    public bool isCrouching;
+    public bool isCrouchWalking;
+    public bool isSprinting;
+    public bool isWalking;
+    public bool isJumping;
+
+    //YYYYYYYYYYYYYYYYYYYYYYYYY VVVVVVVVVVVEEEEEEELLLLOOCCCCCCCIIIIIITTTTTTTYYYYYYYYY for impact
+    public float currentYVelocity;
 
     private void Awake()
     {
@@ -50,17 +63,24 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         MovePlayer();
         ApplyGravity();
+        CheckVelocity();
         Crouch();
         Sprint();
         StaminaUpdate();
         if (canClimb)
             Climbing();
+        CheckState();
     }
 
     //Checks to see if player is grounded
     public void CheckIfGrounded()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if(isGrounded)
+        {
+            isJumping = false;
+            isClimbing = false;
+        }
     }
 
     //Player Jump function
@@ -75,8 +95,8 @@ public class PlayerMovement : MonoBehaviour
     //Checks player input and moves charactor controller accordingly
     public void MovePlayer()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
 
         Vector3 move = transform.right * x + transform.forward * z;
 
@@ -86,17 +106,15 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
+
         }
     }
 
     public void ApplyGravity()
     {
-        if (!isClimbing)
-        {
             velocity.y += gravity * Time.deltaTime;
 
             controller.Move(velocity * Time.deltaTime);
-        }
     }
 
     //Crouches the player by adjusting the height of the Player asset
@@ -104,14 +122,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            isCrouching = true;
+            if(isGrounded)
+                isCrouching = true;
+
             controller.height = 1.9f;
             speed = 4f;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            isCrouching = false;
             controller.height = 3.8f;
             speed = 12f;
         }
@@ -161,6 +180,8 @@ public class PlayerMovement : MonoBehaviour
         {
             if (stamina >= 60)
             {
+                isClimbing = true;
+
                 velocity.y = Mathf.Sqrt(pullUpHeight * -2f * gravity);
 
                 stamina -= staminaPullUp;
@@ -181,6 +202,54 @@ public class PlayerMovement : MonoBehaviour
         if (other.CompareTag("ClimbableEdge"))
         {
             canClimb = false;
+        }
+    }
+
+    public void CheckVelocity()
+    {
+        currentYVelocity = velocity.y;
+    }
+
+    public void CheckState()
+    {
+        if (x == 0 && z == 0 || !isGrounded)
+        {
+            isSprinting = false;
+            isWalking = false;
+            isCrouchWalking = false;
+        }
+        else if (speed == 4f && isGrounded && x != 0f || speed == 4f && isGrounded && z != 0f)
+        {
+            isCrouching = true;
+            isCrouchWalking = true;
+
+            isSprinting = false;
+            isWalking = false;
+        }
+        
+        else if (speed == 12f && isGrounded && x != 0f || speed == 12f && isGrounded && z != 0f)
+        {
+            isWalking = true;
+
+            isSprinting = false;
+            isCrouching = false;
+        }
+
+        else if (speed == 18f && isGrounded && x != 0f || speed == 18f && isGrounded && z != 0f)
+        {
+            isSprinting = true;
+
+            isCrouching = false;
+            isWalking = false;
+        }
+        
+        else if (speed == 4f && isGrounded && x == 0f || speed == 4f && isGrounded && z == 0f)
+        {
+            isCrouching = true;
+
+            isCrouchWalking = false;
+            isSprinting = false;
+            isWalking = false;
         }
     }
 
