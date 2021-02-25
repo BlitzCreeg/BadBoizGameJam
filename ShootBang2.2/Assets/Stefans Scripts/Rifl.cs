@@ -2,32 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pistol : MonoBehaviour
+public class Rifl : MonoBehaviour
 {
-    public float damage = 10f;
-    public float range = 50f;
-    public float fireRate = 15f;
+    public float damage = 30f;
+    public float range = 100f;
+    public float fireRate = 25f;
+    public float ammoCount = 30f;
 
     private float nextTimeToFire = 0f;
-
-    public float charge = 50f;
-
-    public bool isRunning = false;
-
-    public Camera playerCam;
 
     public GameObject stoneImpact;
     public GameObject metalImpact;
     public GameObject woodImpact;
     public GameObject enemyImpact;
 
-    public ParticleSystem muzzleFlash;
+    public Camera playerCam;
 
-    private void OnEnable()
-    {
-        isRunning = false;
-        StartCoroutine(rechargeWait());
-    }
+    public ParticleSystem muzzleFlash;
 
     // Update is called once per frame
     void Update()
@@ -37,18 +28,20 @@ public class Pistol : MonoBehaviour
 
     public void CheckFire()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
+        if (Input.GetKey(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
         {
             nextTimeToFire = Time.time + 1f / fireRate;
-            if (charge >= 10f)
+            if (ammoCount > 0f)
+            {
+                ammoCount--;
                 Shoot();
+
+            }
         }
     }
 
     public void Shoot()
     {
-        charge -= 10f;
-
         muzzleFlash.Play();
 
         RaycastHit hit;
@@ -84,31 +77,5 @@ public class Pistol : MonoBehaviour
                 Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
 
         }
-
-        if (!isRunning)
-            StartCoroutine(rechargeWait());
-    }
-
-    public void Recharge()
-    {
-        if (charge > 50f)
-            charge = 50f;
-        else if (charge < 0f)
-            charge = 0f;
-        else
-            charge += 4f;
-    }
-
-    IEnumerator rechargeWait()
-    {
-        isRunning = true;
-        yield return new WaitForSeconds(3);
-
-        while (charge < 50f || charge > 50f)
-        {
-            yield return new WaitForSeconds(1f);
-            Recharge();
-        }
-        isRunning = false;
     }
 }

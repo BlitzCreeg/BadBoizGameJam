@@ -6,6 +6,12 @@ TagManager:
   tags:
   - ClimbableEdge
   - FxTemporaire
+  - Metal
+  - Wood
+  - Stone
+  - Fighter
+  - Protector
+  - RiflePickUp
   layers:
   - Default
   - TransparentFX
