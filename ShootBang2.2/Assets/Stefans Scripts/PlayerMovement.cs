@@ -8,7 +8,9 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
 
     public GameObject player;
-    public GameObject body;
+
+    public GameObject crouchCamPos;
+    public GameObject standCamPos;
 
     public Camera playerCam;
 
@@ -24,12 +26,19 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpHeight = 3f;
     public float pullUpHeight = 2f;
+    public float crouchHeight;
+
+    private float height;
 
     public float fov = 60;
     public float sprintFov = 80;
 
     public float x;
     public float z;
+
+    public float crouchSpeed = 2f;
+    public float sprintSpeed = 10f;
+    public float walkSpeed = 6f;
 
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -54,6 +63,9 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerCam.fieldOfView = fov;
+        height = controller.height;
+        //standCamPos.transform.position = new Vector3(controller.transform.position.x, controller.transform.position.y + height / 2.5f, controller.transform.position.z);
+        //crouchCamPos.transform.position = new Vector3(controller.transform.position.x, controller.transform.position.y + 0.2f, controller.transform.position.z);
     }
 
     // Update is called once per frame
@@ -106,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
+            isJumping = true;
 
         }
     }
@@ -125,14 +138,17 @@ public class PlayerMovement : MonoBehaviour
             if(isGrounded)
                 isCrouching = true;
 
-            controller.height = 1.9f;
-            speed = 4f;
+            controller.height = height / 4;
+            playerCam.transform.position = crouchCamPos.transform.position;
+            speed = crouchSpeed;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.LeftControl) && x > 0 || Input.GetKeyUp(KeyCode.LeftControl) && z > 0)
         {
-            controller.height = 3.8f;
-            speed = 12f;
+            controller.height = height;
+            playerCam.transform.position = standCamPos.transform.position;
+
+            speed = walkSpeed;
         }
     }
 
@@ -140,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && stamina >= 10f)
         {
-            speed = 18f;
+            speed = sprintSpeed;
             staminaUsing = 20f;
 
             playerCam.fieldOfView = sprintFov;
@@ -148,13 +164,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (stamina < 10f)
         {
-            speed = 12f;
+            speed = walkSpeed;
             playerCam.fieldOfView = fov;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 12f;
+            speed = walkSpeed;
             staminaUsing = 0f;
             playerCam.fieldOfView = fov;
         }
@@ -218,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
             isCrouchWalking = false;
         }
-        else if (speed == 4f && isGrounded && x != 0f || speed == 4f && isGrounded && z != 0f)
+        else if (speed == crouchSpeed && isGrounded && x != 0f || speed == crouchSpeed && isGrounded && z != 0f)
         {
             isCrouching = true;
             isCrouchWalking = true;
@@ -227,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
         }
         
-        else if (speed == 12f && isGrounded && x != 0f || speed == 12f && isGrounded && z != 0f)
+        else if (speed == walkSpeed && isGrounded && x != 0f || speed == walkSpeed && isGrounded && z != 0f)
         {
             isWalking = true;
 
@@ -235,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
             isCrouching = false;
         }
 
-        else if (speed == 18f && isGrounded && x != 0f || speed == 18f && isGrounded && z != 0f)
+        else if (speed == sprintSpeed && isGrounded && x != 0f || speed == sprintSpeed && isGrounded && z != 0f)
         {
             isSprinting = true;
 
@@ -243,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
         }
         
-        else if (speed == 4f && isGrounded && x == 0f || speed == 4f && isGrounded && z == 0f)
+        else if (speed == crouchSpeed && isGrounded && x == 0f || speed == crouchSpeed && isGrounded && z == 0f)
         {
             isCrouching = true;
 
