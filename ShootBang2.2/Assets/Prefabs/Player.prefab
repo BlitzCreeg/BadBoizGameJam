@@ -115,6 +115,7 @@ MonoBehaviour:
   metalImpact: {fileID: 100002, guid: 627bfa08ce624ab40ab2fea71785b5f0, type: 3}
   woodImpact: {fileID: 100002, guid: 053ffbc5e89111349bb060a39ffa0f37, type: 3}
   enemyImpact: {fileID: 100002, guid: 9bdf482976052a647946e8159033a295, type: 3}
+  pipeImpact: {fileID: 100002, guid: 2b4ffdf4a64f87d4ca3c0de925e6d343, type: 3}
   playerCam: {fileID: 5149627316580933465}
   muzzleFlash: {fileID: 5149627316913663068}
 --- !u!1 &5149627316131674085
@@ -164,7 +165,7 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 2.34
   m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.005
@@ -185,7 +186,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 5149627316131674075}
   player: {fileID: 5149627316131674085}
-  body: {fileID: 0}
+  crouchCamPos: {fileID: 5149627316868495143}
+  standCamPos: {fileID: 5149627316213557685}
   playerCam: {fileID: 5149627316580933465}
   speed: 12
   gravity: -19.62
@@ -197,16 +199,24 @@ MonoBehaviour:
   staminaPullUp: 60
   jumpHeight: 3
   pullUpHeight: 5
+  crouchHeight: 0
   fov: 60
   sprintFov: 80
   x: 0
   z: 0
+  crouchSpeed: 2
+  sprintSpeed: 10
+  walkSpeed: 6
   groundCheck: {fileID: 5149627316818800402}
   groundDistance: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 256
+  ventCheck:
+    serializedVersion: 2
+    m_Bits: 4096
   isGrounded: 0
+  isInVent: 0
   canClimb: 0
   isClimbing: 0
   isCrouching: 0
@@ -239,7 +249,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5149627316213557685}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.6000001, z: 0}
+  m_LocalPosition: {x: 0, y: 1.07, z: 0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5149627316131674072}
@@ -5245,7 +5255,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5149627316868495143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5149627316131674072}
@@ -10026,6 +10036,7 @@ MonoBehaviour:
   metalImpact: {fileID: 100002, guid: 627bfa08ce624ab40ab2fea71785b5f0, type: 3}
   woodImpact: {fileID: 100002, guid: 053ffbc5e89111349bb060a39ffa0f37, type: 3}
   enemyImpact: {fileID: 100002, guid: 9bdf482976052a647946e8159033a295, type: 3}
+  pipeImpact: {fileID: 100002, guid: 2b4ffdf4a64f87d4ca3c0de925e6d343, type: 3}
   muzzleFlash: {fileID: 5149627316360574882}
 --- !u!1001 &5149627316789641100
 PrefabInstance:

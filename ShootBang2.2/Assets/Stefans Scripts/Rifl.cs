@@ -15,6 +15,7 @@ public class Rifl : MonoBehaviour
     public GameObject metalImpact;
     public GameObject woodImpact;
     public GameObject enemyImpact;
+    public GameObject pipeImpact;
 
     public Camera playerCam;
 
@@ -48,7 +49,6 @@ public class Rifl : MonoBehaviour
 
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
 
             FighterHealth fighterHealth = hit.transform.GetComponent<FighterHealth>();
 
@@ -68,6 +68,10 @@ public class Rifl : MonoBehaviour
             else if (hit.transform.gameObject.CompareTag("Wood"))
             {
                 Instantiate(woodImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Pipe"))
+            {
+                Instantiate(pipeImpact, hit.point, Quaternion.LookRotation(hit.normal));
             }
             else if (hit.transform.gameObject.CompareTag("Fighter") || hit.transform.gameObject.CompareTag("Protector"))
             {

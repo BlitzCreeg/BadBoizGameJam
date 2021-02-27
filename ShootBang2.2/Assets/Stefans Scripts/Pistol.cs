@@ -20,6 +20,7 @@ public class Pistol : MonoBehaviour
     public GameObject metalImpact;
     public GameObject woodImpact;
     public GameObject enemyImpact;
+    public GameObject pipeImpact;
 
     public ParticleSystem muzzleFlash;
 
@@ -55,7 +56,6 @@ public class Pistol : MonoBehaviour
 
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
 
             FighterHealth fighterHealth = hit.transform.GetComponent<FighterHealth>();
 
@@ -79,6 +79,10 @@ public class Pistol : MonoBehaviour
             else if (hit.transform.gameObject.CompareTag("Fighter") || hit.transform.gameObject.CompareTag("Protector"))
             {
                 Instantiate(enemyImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Pipe"))
+            {
+                Instantiate(pipeImpact, hit.point, Quaternion.LookRotation(hit.normal));
             }
             else
                 Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
