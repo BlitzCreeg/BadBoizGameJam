@@ -100,7 +100,7 @@ public class Pistol : MonoBehaviour
         else if (charge < 0f)
             charge = 0f;
         else
-            charge += 4f;
+            charge += 1f;
     }
 
     IEnumerator rechargeWait()
@@ -110,7 +110,7 @@ public class Pistol : MonoBehaviour
 
         while (charge < 50f || charge > 50f)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.25f);
             Recharge();
         }
         isRunning = false;
