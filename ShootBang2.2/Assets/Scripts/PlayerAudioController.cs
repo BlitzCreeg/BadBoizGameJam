@@ -8,16 +8,17 @@ public class PlayerAudioController : MonoBehaviour
     public AudioClip[] concreteWalkArray;
     public AudioClip[] concreteSprintArray;
     public AudioSource effectSource;
+    public PlayerMovement playerMovement;
     float pitchMin, pitchMax, volumeMin, volumeMax;
     private int clipIndex = 0;
-
+    int i;
 
     void PlayRandomConcreteCrouch()
     {
         pitchMin = 0.9f;
-        pitchMax = 1.2f;
-        volumeMin = 1.0f;
-        volumeMax = 1.4f;
+        pitchMax = 1.1f;
+        volumeMin = 0.6f;
+        volumeMax = .8f;
         effectSource.pitch = Random.Range(pitchMin, pitchMax);
         effectSource.volume = Random.Range(volumeMin, volumeMax);
         clipIndex = RepeatCheck(clipIndex, concreteCrouchArray.Length);
@@ -27,9 +28,9 @@ public class PlayerAudioController : MonoBehaviour
     void PlayRandomConcreteWalk()
     {
         pitchMin = 0.8f;
-        pitchMax = 1.2f;
-        volumeMin = 0.8f;
-        volumeMax = 1.2f;
+        pitchMax = 1f;
+        volumeMin = 0.25f;
+        volumeMax = 0.5f;
         effectSource.pitch = Random.Range(pitchMin, pitchMax);
         effectSource.volume = Random.Range(volumeMin, volumeMax);
         clipIndex = RepeatCheck(clipIndex, concreteWalkArray.Length);
@@ -38,8 +39,8 @@ public class PlayerAudioController : MonoBehaviour
 
     void PlayRandomConcreteSprint()
     {
-        pitchMin = 0.8f;
-        pitchMax = 1.4f;
+        pitchMin = 0.9f;
+        pitchMax = 1.2f;
         volumeMin = 0.8f;
         volumeMax = 1.4f;
         effectSource.pitch = Random.Range(pitchMin, pitchMax);
@@ -59,8 +60,54 @@ public class PlayerAudioController : MonoBehaviour
         return index;
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        if (playerMovement.isWalking == true)
+        {
+            if (i >= 35)
+            {
+                PlayRandomConcreteWalk();
+                i = 0;
+            }
+            else
+            {
+                i = i + 1;
+            }
+            print("walking");
+        }
+        else if (playerMovement.isCrouchWalking == true)
+        {
+            if (i >= 50)
+            {
+                PlayRandomConcreteCrouch();
+                i = 0;
+
+            }
+            else
+            {
+                i = i + 1;
+            }
+            print("crouching");
+        }
+        else if (playerMovement.isSprinting == true)
+        {
+            if (i >= 15)
+            {
+                PlayRandomConcreteSprint();
+                i = 0;
+                print("stomp");
+            }
+            else
+            {
+                i = i + 1;
+            }
+            print("running");
+        }
+        if (playerMovement.isSprinting == false)
+        {
+            print("not running");
+        }
+        print(i);
 
         if (Input.GetKeyDown("j"))
         {
