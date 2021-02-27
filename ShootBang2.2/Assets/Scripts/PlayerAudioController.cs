@@ -7,6 +7,7 @@ public class PlayerAudioController : MonoBehaviour
     public AudioClip[] concreteCrouchArray;
     public AudioClip[] concreteWalkArray;
     public AudioClip[] concreteSprintArray;
+    public AudioClip[] jumpArray;
     public AudioSource effectSource;
     public PlayerMovement playerMovement;
     float pitchMin, pitchMax, volumeMin, volumeMax;
@@ -49,6 +50,16 @@ public class PlayerAudioController : MonoBehaviour
         effectSource.PlayOneShot(concreteSprintArray[clipIndex]);
     }
 
+    void PlayRandomJump()
+    {
+        pitchMin = 0.8f;
+        pitchMax = 1.2f;
+        volumeMin = 0.8f;
+        volumeMax = 1.2f;
+        clipIndex = RepeatCheck(clipIndex, jumpArray.Length);
+        effectSource.PlayOneShot(jumpArray[clipIndex]);
+    }
+
     int RepeatCheck(int previousIndex, int range)
     {
         int index = Random.Range(0, range);
@@ -87,7 +98,6 @@ public class PlayerAudioController : MonoBehaviour
             {
                 i = i + 1;
             }
-            print("crouching");
         }
         else if (playerMovement.isSprinting == true)
         {
@@ -95,19 +105,17 @@ public class PlayerAudioController : MonoBehaviour
             {
                 PlayRandomConcreteSprint();
                 i = 0;
-                print("stomp");
             }
             else
             {
                 i = i + 1;
             }
-            print("running");
         }
-        if (playerMovement.isSprinting == false)
+
+        if (playerMovement.isJumping == true)
         {
-            print("not running");
+            PlayRandomJump();
         }
-        print(i);
 
         if (Input.GetKeyDown("j"))
         {
