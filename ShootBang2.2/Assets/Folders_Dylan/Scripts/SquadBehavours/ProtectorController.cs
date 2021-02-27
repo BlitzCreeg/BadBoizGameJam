@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class ProtectorController : MonoBehaviour
 {
-    public NavMeshAgent protectorAI;
     public Vector3 targetPosition;
+    public Vector3 previousPosition;
+
     public bool foundPlayer;
+
+    public NavMeshAgent protectorAI;
     public SquadBehavour squadBehavour;
-
-
+    public HumanoidStateController hSC;
+    
     void Start()
     {
         protectorAI = GetComponent<NavMeshAgent>();
@@ -19,19 +22,18 @@ public class ProtectorController : MonoBehaviour
 
     void Update()
     {
-        /*
-        if (foundPlayer)
-        {
-            //transform.LookAt(targetPosition);
-            protectorAI.SetDestination(targetPosition);
-        }
-
-        else
-        {
-            protectorAI.SetDestination(targetPosition);
-        }
-        */
-
         protectorAI.SetDestination(targetPosition);
+
+        if(previousPosition != transform.position)
+        {
+            hSC.isWalking = true;
+        }
+
+        if(previousPosition == transform.position)
+        {
+            hSC.isWalking = false;
+        }
+
+        previousPosition = transform.position;
     }
 }

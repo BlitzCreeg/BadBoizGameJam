@@ -14,7 +14,7 @@ public class SquadBehavour : MonoBehaviour
     public float stoppingDistanceProtectors = 2.5f;
     public float stoppingDistanceFighters = 5.5f;
 
-    // GameObject References
+    // GameObject/Object References
     public GameObject[] fighters;
     public GameObject[] protectors;
 
@@ -31,10 +31,10 @@ public class SquadBehavour : MonoBehaviour
     public void Start()
     {
         currentPlayerPosition = GameObject.Find("Player").transform.position;
+
         foundPlayer = false;
         followPlayerPos = false;
         GetSquadCharacters();
-        
         moveScout = moveTarget.GetComponent<MoveScout>();
     }
 
@@ -254,7 +254,7 @@ public class SquadBehavour : MonoBehaviour
             foreach (GameObject f in fighters)
             {
                 f.GetComponent<FighterController>().targetPosition = MoveTargetPosition;
-                Debug.Log(MoveTargetPosition);
+                //Debug.Log(MoveTargetPosition);
             }
 
             foreach (GameObject p in protectors)
