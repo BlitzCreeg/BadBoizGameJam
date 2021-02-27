@@ -16,7 +16,11 @@ public class Pistol : MonoBehaviour
 
     public Camera playerCam;
 
-    public GameObject impactEffect;
+    public GameObject stoneImpact;
+    public GameObject metalImpact;
+    public GameObject woodImpact;
+    public GameObject enemyImpact;
+    public GameObject pipeImpact;
 
     public ParticleSystem muzzleFlash;
 
@@ -52,7 +56,6 @@ public class Pistol : MonoBehaviour
 
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
 
             FighterHealth fighterHealth = hit.transform.GetComponent<FighterHealth>();
 
@@ -61,7 +64,29 @@ public class Pistol : MonoBehaviour
                 fighterHealth.TakeDamage(damage);
             }
 
-            Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+            if (hit.transform.gameObject.CompareTag("Stone"))
+            {
+                Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Metal"))
+            {
+                Instantiate(metalImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Wood"))
+            {
+                Instantiate(woodImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Fighter") || hit.transform.gameObject.CompareTag("Protector"))
+            {
+                Instantiate(enemyImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else if (hit.transform.gameObject.CompareTag("Pipe"))
+            {
+                Instantiate(pipeImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+            else
+                Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
+
         }
 
         if (!isRunning)
@@ -75,7 +100,7 @@ public class Pistol : MonoBehaviour
         else if (charge < 0f)
             charge = 0f;
         else
-            charge += 4f;
+            charge += 1f;
     }
 
     IEnumerator rechargeWait()
@@ -85,7 +110,7 @@ public class Pistol : MonoBehaviour
 
         while (charge < 50f || charge > 50f)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.25f);
             Recharge();
         }
         isRunning = false;

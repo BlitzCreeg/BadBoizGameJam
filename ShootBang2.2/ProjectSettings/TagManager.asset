@@ -6,6 +6,14 @@ TagManager:
   tags:
   - ClimbableEdge
   - FxTemporaire
+  - Metal
+  - Wood
+  - Stone
+  - Fighter
+  - Protector
+  - RiflePickUp
+  - Pipe
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -19,7 +27,7 @@ TagManager:
   - ClimbEdge
   - ClimbCheck
   - Player
-  - 
+  - Vent
   - 
   - 
   - 

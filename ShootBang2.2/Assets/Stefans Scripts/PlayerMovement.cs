@@ -8,7 +8,9 @@ public class PlayerMovement : MonoBehaviour
     public CharacterController controller;
 
     public GameObject player;
-    public GameObject body;
+
+    public GameObject crouchCamPos;
+    public GameObject standCamPos;
 
     public Camera playerCam;
 
@@ -24,6 +26,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float jumpHeight = 3f;
     public float pullUpHeight = 2f;
+    public float crouchHeight;
+
+    private float height;
 
     public float fov = 60;
     public float sprintFov = 80;
@@ -31,13 +36,19 @@ public class PlayerMovement : MonoBehaviour
     public float x;
     public float z;
 
+    public float crouchSpeed = 2f;
+    public float sprintSpeed = 10f;
+    public float walkSpeed = 6f;
+
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    public LayerMask ventCheck;
 
     Vector3 velocity;
 
     public bool isGrounded;
+    public bool isInVent;
     public bool canClimb;
 
     // DANNNNNNNNNNNYYYYYYYYYYYYYSSSSSSSSSSSSSSSS BOOOOOOLLLLLLLLSSSSSSSSSSS
@@ -54,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerCam.fieldOfView = fov;
+        playerCam.transform.position = standCamPos.transform.position;
+        height = controller.height;
     }
 
     // Update is called once per frame
@@ -81,12 +94,19 @@ public class PlayerMovement : MonoBehaviour
             isJumping = false;
             isClimbing = false;
         }
+
+        isInVent = Physics.CheckSphere(groundCheck.position, groundDistance, ventCheck);
+        if (isInVent)
+        {
+            isJumping = false;
+            isClimbing = false;
+        }
     }
 
     //Player Jump function
     public void Jump()
     {
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0 || isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -102,10 +122,11 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f && !isCrouching)
+        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f || Input.GetButtonDown("Jump") && isInVent && stamina >= 30f)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
+            isJumping = true;
 
         }
     }
@@ -125,14 +146,17 @@ public class PlayerMovement : MonoBehaviour
             if(isGrounded)
                 isCrouching = true;
 
-            controller.height = 1.9f;
-            speed = 4f;
+            controller.height = height / 4;
+            playerCam.transform.position = crouchCamPos.transform.position;
+            speed = crouchSpeed;
         }
 
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.LeftControl) && x > 0 || Input.GetKeyUp(KeyCode.LeftControl) && z > 0)
         {
-            controller.height = 3.8f;
-            speed = 12f;
+            controller.height = height;
+            playerCam.transform.position = standCamPos.transform.position;
+
+            speed = walkSpeed;
         }
     }
 
@@ -140,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && stamina >= 10f)
         {
-            speed = 18f;
+            speed = sprintSpeed;
             staminaUsing = 20f;
 
             playerCam.fieldOfView = sprintFov;
@@ -148,13 +172,13 @@ public class PlayerMovement : MonoBehaviour
 
         if (stamina < 10f)
         {
-            speed = 12f;
+            speed = walkSpeed;
             playerCam.fieldOfView = fov;
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 12f;
+            speed = walkSpeed;
             staminaUsing = 0f;
             playerCam.fieldOfView = fov;
         }
@@ -195,6 +219,11 @@ public class PlayerMovement : MonoBehaviour
         {
             canClimb = true;
         }
+
+        if (other.gameObject.CompareTag("Door"))
+        {
+            other.gameObject.GetComponent<SingleDoor>().isPlayer = true;
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -202,6 +231,12 @@ public class PlayerMovement : MonoBehaviour
         if (other.CompareTag("ClimbableEdge"))
         {
             canClimb = false;
+        }
+
+        if (other.gameObject.CompareTag("Door"))
+        {
+            other.gameObject.GetComponent<SingleDoor>().isPlayer = false;
+
         }
     }
 
@@ -218,7 +253,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
             isCrouchWalking = false;
         }
-        else if (speed == 4f && isGrounded && x != 0f || speed == 4f && isGrounded && z != 0f)
+        else if (speed == crouchSpeed && isGrounded && x != 0f || speed == crouchSpeed && isGrounded && z != 0f)
         {
             isCrouching = true;
             isCrouchWalking = true;
@@ -227,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
         }
         
-        else if (speed == 12f && isGrounded && x != 0f || speed == 12f && isGrounded && z != 0f)
+        else if (speed == walkSpeed && isGrounded && x != 0f || speed == walkSpeed && isGrounded && z != 0f)
         {
             isWalking = true;
 
@@ -235,7 +270,7 @@ public class PlayerMovement : MonoBehaviour
             isCrouching = false;
         }
 
-        else if (speed == 18f && isGrounded && x != 0f || speed == 18f && isGrounded && z != 0f)
+        else if (speed == sprintSpeed && isGrounded && x != 0f || speed == sprintSpeed && isGrounded && z != 0f)
         {
             isSprinting = true;
 
@@ -243,7 +278,7 @@ public class PlayerMovement : MonoBehaviour
             isWalking = false;
         }
         
-        else if (speed == 4f && isGrounded && x == 0f || speed == 4f && isGrounded && z == 0f)
+        else if (speed == crouchSpeed && isGrounded && x == 0f || speed == crouchSpeed && isGrounded && z == 0f)
         {
             isCrouching = true;
 
