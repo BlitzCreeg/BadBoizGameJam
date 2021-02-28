@@ -11,7 +11,7 @@ public class ScoutController : MonoBehaviour
     GameObject[] allSquads;
     public GameObject squadClosest;
     public GameObject moveTarget;
-    public MoveScout moveScout;
+    public Target moveScout;
     public Vector3 playerFoundPosition;
 
     // public static object Instance { get; internal set; }
@@ -20,8 +20,13 @@ public class ScoutController : MonoBehaviour
     {
         GetAllSquads();
         scoutAI = GetComponent<NavMeshAgent>();
-        moveScout = moveTarget.GetComponent<MoveScout>();
+        moveScout = moveTarget.GetComponent<Target>();
         isScouting = true;
+
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
     }
 
     void Update()

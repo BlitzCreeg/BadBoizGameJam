@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SquadBehavour : MonoBehaviour
 {
-    public MoveScout moveScout;
+    public Target moveScout;
 
     // Positioning
     public GameObject moveTarget;
@@ -35,7 +35,7 @@ public class SquadBehavour : MonoBehaviour
         foundPlayer = false;
         followPlayerPos = false;
         GetSquadCharacters();
-        moveScout = moveTarget.GetComponent<MoveScout>();
+        moveScout = moveTarget.GetComponent<Target>();
     }
 
     public void AgressivePositions()
@@ -55,6 +55,7 @@ public class SquadBehavour : MonoBehaviour
             f.GetComponent<FighterController>().targetPosition = updatingPlayerPosition;
             f.GetComponent<FighterController>().canMove = true;
             f.GetComponent<FighterController>().foundPlayer = true;
+            Debug.Log("Found Player");
         }
 
         foreach (GameObject p in protectors)
@@ -130,7 +131,7 @@ public class SquadBehavour : MonoBehaviour
 
     public void FoundPlayer(Vector3 playerLastPosition)
     {
-        //Debug.Log("Players last pos = " + playerLastPosition);
+        Debug.Log("Found Player");
 
         foundPlayer = true;
         currentPlayerPosition = playerLastPosition;
@@ -160,12 +161,14 @@ public class SquadBehavour : MonoBehaviour
             if (distBetweenFighters < minFighterDistance)
             {
                 fighters[0].GetComponent<FighterController>().canMove = false;
+                //Debug.Log("Too Close");
             }
 
             // Too far
             else if (distBetweenFighters > maxFighterDistance)
             {
                 fighters[0].GetComponent<FighterController>().canMove = true;
+                //Debug.Log("Too Far");
             }
 
             // Fighter distances
@@ -181,6 +184,7 @@ public class SquadBehavour : MonoBehaviour
                 foreach (GameObject f in fighters)
                 {
                     f.GetComponent<FighterController>().canMove = false;
+                    //Debug.Log("Fighters closer to players");
                 }
             }
 
@@ -189,11 +193,13 @@ public class SquadBehavour : MonoBehaviour
                 foreach (GameObject f in fighters)
                 {
                     f.GetComponent<FighterController>().canMove = true;
+                    //Debug.Log("Fighters to far from players");
                 }
             }
         }
     }
 
+    // If protector is to far from the player it cannot protect the fighters so fighters wait until the protector is closer
     void ProtectorDistance()
     {
         float distBetweenProtectorAndPlayer = Vector3.Distance(protectors[0].transform.position, PlayerPosition);
@@ -204,6 +210,8 @@ public class SquadBehavour : MonoBehaviour
             foreach (GameObject f in fighters)
             {
                 f.GetComponent<FighterController>().canMove = false;
+                //followPlayerPos = false;
+                //Debug.Log("Dont Move");
             }
         }
 
@@ -212,6 +220,7 @@ public class SquadBehavour : MonoBehaviour
             foreach (GameObject f in fighters)
             {
                 f.GetComponent<FighterController>().canMove = true;
+                //Debug.Log("Move");
             }
         }
     }
@@ -221,11 +230,12 @@ public class SquadBehavour : MonoBehaviour
         float distBetweenEnemies = Vector3.Distance(protectors[0].transform.position, fighters[0].transform.position);
 
         // Squad is too far apart
-        if (distBetweenEnemies > maxSquadDistance)
+        if (distBetweenEnemies >= maxSquadDistance)
         {
             foreach (GameObject f in fighters)
             {
                 f.GetComponent<FighterController>().canMove = true;
+                //Debug.Log("Enemy Distances");
             }
         }
 
@@ -234,6 +244,7 @@ public class SquadBehavour : MonoBehaviour
             foreach (GameObject f in fighters)
             {
                 f.GetComponent<FighterController>().canMove = false;
+                //Debug.Log("Enemy Distances Dont Move");
             }
         }
     }
@@ -250,6 +261,7 @@ public class SquadBehavour : MonoBehaviour
         if (!foundPlayer && !followPlayerPos)
         {
             moveScout.canMove = true;
+            //Debug.Log("Move Fighter");
 
             foreach (GameObject f in fighters)
             {

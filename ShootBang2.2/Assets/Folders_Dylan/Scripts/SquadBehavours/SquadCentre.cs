@@ -24,7 +24,6 @@ public class SquadCentre : MonoBehaviour
         //Debug.Log(protectorGameObjects.Length);
 
         averageDivider = fighterGameObjects.Length + protectorGameObjects.Length;
-        Debug.Log(averageDivider);
     }
 
     void LateUpdate()

@@ -8,6 +8,7 @@ public class RaycastLook : MonoBehaviour
     ProtectorController protectorController;
 
     public int counter;
+    public int maxCounter;
 
     void Start()
     {
@@ -36,7 +37,7 @@ public class RaycastLook : MonoBehaviour
 
             if (hit.transform.tag == "Player")
             {
-                Debug.Log("Found Player");
+                //Debug.Log("Found Player");
                 
                 if (tag == "Fighter")
                 {
@@ -59,10 +60,11 @@ public class RaycastLook : MonoBehaviour
                 {
                     counter++;
                     
-                    if (counter > 400)
+                    if (counter > maxCounter)
                     {
                         Debug.Log("Stop Looking For Player");
                         fighterController.squadBehavour.followPlayerPos = false;
+                        //fighterController.canMove = false;
                         counter = 0;
                     }
                 }
@@ -74,7 +76,7 @@ public class RaycastLook : MonoBehaviour
                 {
                     counter++;
 
-                    if (counter > 400)
+                    if (counter > maxCounter)
                     {
                         Debug.Log("Stop Looking For Player");
                         protectorController.squadBehavour.followPlayerPos = false;
@@ -83,7 +85,7 @@ public class RaycastLook : MonoBehaviour
                 }
             } 
 
-            Debug.Log("Did not Hit");
+            //Debug.Log("Did not Hit");
         }
     }
 }

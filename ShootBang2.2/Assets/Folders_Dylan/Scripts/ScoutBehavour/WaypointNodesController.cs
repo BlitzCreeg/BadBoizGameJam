@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaypointNodesController : MonoBehaviour {
 
     public static Transform[] waypointNodes;
+    public Transform[] nodesReference;
 
     void Awake()
     {
@@ -13,5 +14,7 @@ public class WaypointNodesController : MonoBehaviour {
         {
             waypointNodes[i] = transform.GetChild(i);
         }
+
+        nodesReference = waypointNodes;
     }
 }

@@ -7,6 +7,7 @@ public class FighterController : MonoBehaviour
 {
     public Vector3 targetPosition;
     public Vector3 previousPosition;
+    private Vector3 playerPosition;
 
     public bool canMove;
     public bool foundPlayer;
@@ -16,6 +17,9 @@ public class FighterController : MonoBehaviour
     public SquadBehavour squadBehavour;
     public HumanoidStateController hSC;
 
+    public float attackRange;
+    public float distance;
+
     void Start()
     {
         fighterAI = GetComponent<NavMeshAgent>();
@@ -23,22 +27,51 @@ public class FighterController : MonoBehaviour
         canMove = false;
         isMoving = false;
         previousPosition = gameObject.transform.position;
+        playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
     }
 
     void Update()
     {
-        fighterAI.SetDestination(targetPosition);
+        CheckDistance();
 
-        if(previousPosition != transform.position)
+        if (canMove)
         {
-            hSC.isWalking = true;
+            fighterAI.SetDestination(targetPosition);
+
+            if(previousPosition != transform.position)
+            {
+                hSC.isWalking = true;
+                isMoving = true;
+            }
         }
 
         if(previousPosition == transform.position)
         {
             hSC.isWalking = false;
+            isMoving = false;
         }
 
+        AttackPlayer();
+        
         previousPosition = transform.position;
+    }
+
+    void CheckDistance()
+    {
+        distance = Vector3.Distance(transform.position, squadBehavour.PlayerPosition);
+    }
+
+    void AttackPlayer()
+    {
+        if(!isMoving && foundPlayer && distance < attackRange)
+        {
+            hSC.isAttackingIdle = true;
+            transform.LookAt(squadBehavour.updatingPlayerPosition);
+        }
+
+        else
+        {
+            hSC.isAttackingIdle = false;
+        }
     }
 }
