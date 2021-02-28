@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 4165050866045801861}
   - component: {fileID: 4165050866045801863}
   - component: {fileID: 4165050866045801860}
-  - component: {fileID: 4165050866045801862}
+  - component: {fileID: 4165050864317944027}
   m_Layer: 0
   m_Name: WORKING DOUBLEDOOOOOOOOOR
   m_TagString: Untagged
@@ -352,7 +352,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &4165050866045801862
+--- !u!114 &4165050864317944027
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -361,11 +361,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3822520756027874978}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5070d4ba889ecc549a2488f49bfc380c, type: 3}
+  m_Script: {fileID: 11500000, guid: e40336a85340a2c4ab004e9a8a7c4299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 4165050866045801860}
   aud: {fileID: 4165050866045801863}
+  doorArray:
+  - {fileID: 8300000, guid: fce31b4535d67c1448d93931eeae2c34, type: 3}
+  - {fileID: 8300000, guid: d56c9edbfce28bd4bbe07e60275799f1, type: 3}
+  - {fileID: 8300000, guid: df76ae3e2ef08a445973cb8856b02255, type: 3}
+  - {fileID: 8300000, guid: 083cb59a11ca24b4eb0aedaa7b38129d, type: 3}
+  canOpen: 0
 --- !u!1 &8653140931879676619
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BFGPickUp : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
 
     public GameObject rifle;
 
@@ -16,10 +17,11 @@ public class BFGPickUp : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            playerAudioController.PlayRandomHandling();
             rifle.GetComponentInChildren<Rifl>().ammoCount = 30f;
             rifle.gameObject.GetComponentInChildren<Rifl>().canUse = true;
 
-            Destroy(this.gameObject, 1f);
+            Destroy(this.gameObject, 0.2f);
         }
     }
 

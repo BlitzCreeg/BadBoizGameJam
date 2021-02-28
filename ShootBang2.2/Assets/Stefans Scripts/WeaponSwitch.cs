@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WeaponSwitch : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
+
     public int selectedWeapon = 0;
     public GameObject rifle;
 
@@ -24,6 +26,7 @@ public class WeaponSwitch : MonoBehaviour
                 selectedWeapon = 0;
             else
             selectedWeapon++;
+            playerAudioController.PlayRandomHandling();
         }
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0f && rifle.GetComponent<Rifl>().canUse)
@@ -32,6 +35,8 @@ public class WeaponSwitch : MonoBehaviour
                 selectedWeapon = transform.childCount - 1;
             else
                 selectedWeapon--;
+            playerAudioController.PlayRandomHandling();
+
         }
 
         if (rifle.GetComponent<Rifl>().canUse == false)

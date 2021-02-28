@@ -113,8 +113,9 @@ public class PlayerAudioController : MonoBehaviour
         clipIndex = RepeatCheck(clipIndex, metalSprintArray.Length);
         playerSource.PlayOneShot(metalSprintArray[clipIndex]);
     }
-    void PlayRandomHandling()
+    public void PlayRandomHandling()
     {
+        handlingSource.Stop();
         pitchMin = 0.8f;
         pitchMax = 1.2f;
         volumeMin = 0.8f;
