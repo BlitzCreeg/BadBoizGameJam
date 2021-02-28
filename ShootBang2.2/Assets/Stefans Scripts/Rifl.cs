@@ -17,6 +17,10 @@ public class Rifl : MonoBehaviour
     public GameObject enemyImpact;
     public GameObject pipeImpact;
 
+    public GameObject rifleDrop;
+
+    public bool canUse = false;
+
     public Camera playerCam;
 
     public ParticleSystem muzzleFlash;
@@ -24,7 +28,8 @@ public class Rifl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckFire();
+        if (canUse)
+            CheckFire();
     }
 
     public void CheckFire()
@@ -37,6 +42,11 @@ public class Rifl : MonoBehaviour
                 ammoCount--;
                 Shoot();
 
+            }
+            else
+            {
+                Instantiate(rifleDrop, transform.position, transform.rotation);
+                canUse = false;
             }
         }
     }
