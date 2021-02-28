@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pistol : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
+
     public float damage = 10f;
     public float range = 50f;
     public float fireRate = 15f;
@@ -13,6 +15,7 @@ public class Pistol : MonoBehaviour
     public float charge = 50f;
 
     public bool isRunning = false;
+   // bool recharge;
 
     public Camera playerCam;
 
@@ -40,6 +43,8 @@ public class Pistol : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
         {
+            playerAudioController.PistolShot();
+
             nextTimeToFire = Time.time + 1f / fireRate;
             if (charge >= 10f)
                 Shoot();
@@ -48,6 +53,7 @@ public class Pistol : MonoBehaviour
 
     public void Shoot()
     {
+       // recharge = false;
         charge -= 10f;
 
         muzzleFlash.Play();
@@ -105,14 +111,20 @@ public class Pistol : MonoBehaviour
 
     IEnumerator rechargeWait()
     {
+        playerAudioController.PistolWait();
         isRunning = true;
         yield return new WaitForSeconds(3);
+       // recharge = true;
 
         while (charge < 50f || charge > 50f)
         {
+            //if (recharge == false)
+           // {
+              //  break;
+            //}
             yield return new WaitForSeconds(0.25f);
             Recharge();
+            playerAudioController.ChargeBeep();
         }
-        isRunning = false;
     }
 }

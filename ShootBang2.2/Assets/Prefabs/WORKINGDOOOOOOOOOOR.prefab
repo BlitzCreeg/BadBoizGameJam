@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 1616502379582250148}
   - component: {fileID: 1264050245006803606}
   - component: {fileID: 1150537509499092752}
+  - component: {fileID: 4079279956119369550}
   m_Layer: 0
   m_Name: DoorFrame
   m_TagString: Metal
@@ -158,6 +159,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &4079279956119369550
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2465051626234585561}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6274059880062070182, guid: 59404845771cc4f45be23b2e86235b5f, type: 3}
 --- !u!1 &7701112194642336248
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,9 +280,8 @@ GameObject:
   - component: {fileID: 8509200421515572807}
   - component: {fileID: 8509200421515572806}
   - component: {fileID: 8509200421515572805}
-  - component: {fileID: 8509200421515572801}
   m_Layer: 0
-  m_Name: door 1
+  m_Name: WORKINGDOOOOOOOOOOR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -336,6 +350,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8509200421515572800}
   aud: {fileID: 8509200421515572805}
+  doorArray:
+  - {fileID: 8300000, guid: fce31b4535d67c1448d93931eeae2c34, type: 3}
+  - {fileID: 8300000, guid: d56c9edbfce28bd4bbe07e60275799f1, type: 3}
+  - {fileID: 8300000, guid: df76ae3e2ef08a445973cb8856b02255, type: 3}
+  - {fileID: 8300000, guid: 083cb59a11ca24b4eb0aedaa7b38129d, type: 3}
 --- !u!82 &8509200421515572805
 AudioSource:
   m_ObjectHideFlags: 0
@@ -432,20 +451,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!64 &8509200421515572801
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509200421515572804}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6274059880062070182, guid: 59404845771cc4f45be23b2e86235b5f, type: 3}
 --- !u!1 &9153821753306869539
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Rifl : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
+
     public float damage = 30f;
     public float range = 100f;
     public float fireRate = 25f;
     public float ammoCount = 30f;
+
+    public AudioClip[] gunshotArray;
+    public AudioClip gunEmpty;
+    float pitchMin, pitchMax, volumeMin, volumeMax;
+    public AudioSource gunSource;
+    private int clipIndex = 0;
 
     private float nextTimeToFire = 0f;
 
@@ -41,14 +49,35 @@ public class Rifl : MonoBehaviour
             {
                 ammoCount--;
                 Shoot();
-
+                pitchMin = 0.9f;
+                pitchMax = 1.2f;
+                volumeMin = 0.8f;
+                volumeMax = 1.4f;
+                gunSource.pitch = Random.Range(pitchMin, pitchMax);
+                gunSource.volume = Random.Range(volumeMin, volumeMax);
+                clipIndex = RepeatCheck(clipIndex, gunshotArray.Length);
+                gunSource.PlayOneShot(gunshotArray[clipIndex]);
             }
             else
             {
+                gunSource.PlayOneShot(gunEmpty);
+                playerAudioController.PlayRandomHandling();
+
                 Instantiate(rifleDrop, transform.position, transform.rotation);
                 canUse = false;
             }
         }
+    }
+
+    int RepeatCheck(int previousIndex, int range)
+    {
+        int index = Random.Range(0, range);
+
+        while (index == previousIndex)
+        {
+            index = Random.Range(0, range);
+        }
+        return index;
     }
 
     public void Shoot()
