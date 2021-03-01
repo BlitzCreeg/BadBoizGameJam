@@ -12,6 +12,7 @@ public class FighterController : MonoBehaviour
     public bool canMove;
     public bool foundPlayer;
     public bool isMoving;
+    public bool canShoot;
 
     public NavMeshAgent fighterAI;
     public SquadBehavour squadBehavour;
@@ -23,9 +24,12 @@ public class FighterController : MonoBehaviour
     void Start()
     {
         fighterAI = GetComponent<NavMeshAgent>();
+
         foundPlayer = false;
         canMove = false;
         isMoving = false;
+        canShoot = false;
+
         previousPosition = gameObject.transform.position;
         playerPosition = GameObject.FindGameObjectWithTag("Player").transform.position;
     }
@@ -65,13 +69,53 @@ public class FighterController : MonoBehaviour
     {
         if(!isMoving && foundPlayer && distance < attackRange)
         {
-            hSC.isAttackingIdle = true;
-            transform.LookAt(squadBehavour.updatingPlayerPosition);
+            //Vector3 direction = transform.position - squadBehavour.updatingPlayerPosition;
+            //transform.LookAt(new Vector3(direction.x, direction.y, direction.z));
+            
+            Vector3 direction = squadBehavour.player.transform.position;
+            transform.LookAt(direction);
+
+            if (canShoot)
+            {
+                hSC.isAttackingIdle = true;
+            }
+
+            else
+            {
+                hSC.isAttackingIdle = false;
+            }
         }
 
         else
         {
             hSC.isAttackingIdle = false;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
+        {
+            Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.TransformDirection(Vector3.forward) * hit.distance, Color.green);
+
+            if (hit.transform.tag == "Player")
+            {
+                canShoot = true;
+                Debug.Log("Can Shoot");
+            }
+
+            else
+            {
+                canShoot = false;
+            }
+        }
+        
+        else
+        {
+            Debug.DrawRay(new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), transform.TransformDirection(Vector3.forward) * 100, Color.black);
+            canShoot = false;
+            Debug.Log("Cannot Shoot");
         }
     }
 }

@@ -12,6 +12,9 @@ TagManager:
   - Fighter
   - Protector
   - RiflePickUp
+  - Squad
+  - Scout
+  - PlayerPosition
   layers:
   - Default
   - TransparentFX

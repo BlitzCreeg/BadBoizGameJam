@@ -15,12 +15,8 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: -1738853157853480407}
     m_Position: {x: 70, y: 30, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: -47703535983249058}
-    m_Position: {x: -230, y: -140, z: 0}
   m_ChildStateMachines: []
-  m_AnyStateTransitions:
-  - {fileID: -6670534778688392949}
+  m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
@@ -75,7 +71,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 25f34655dab5c704a85b8967a11f8824,
+  m_Motion: {fileID: -203655887218126122, guid: 1f8374ada4a82d6428b76a8e0d9278ff,
     type: 3}
   m_Tag: Idle
   m_SpeedParameter: 
@@ -153,7 +149,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 50beb8d20c4245648a0439300076fe7c,
+  m_Motion: {fileID: -203655887218126122, guid: 74127110622aaac4783f5298474cb139,
     type: 3}
   m_Tag: Walking
   m_SpeedParameter: 
@@ -246,6 +242,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: isAttackingIdle
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: isWalking
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6399743731066760547}
   m_Solo: 0
@@ -320,7 +319,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy_Ani_Controller
+  m_Name: Protector_Ani_Controller
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: isWalking
@@ -538,6 +537,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: isAttackingIdle
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: isWalking
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -1738853157853480407}

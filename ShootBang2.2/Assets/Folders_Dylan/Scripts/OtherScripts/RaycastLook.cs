@@ -29,7 +29,6 @@ public class RaycastLook : MonoBehaviour
 
     void FixedUpdate()
     {
-        // For when player looks at enemy
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity))
         {

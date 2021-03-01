@@ -17,6 +17,7 @@ public class SquadBehavour : MonoBehaviour
     // GameObject/Object References
     public GameObject[] fighters;
     public GameObject[] protectors;
+    public GameObject player;
 
     // Max/Min Distances For Enemies
     public float minFighterDistance;
@@ -31,6 +32,7 @@ public class SquadBehavour : MonoBehaviour
     public void Start()
     {
         currentPlayerPosition = GameObject.Find("Player").transform.position;
+        player = GameObject.FindGameObjectWithTag("PlayerPosition");
 
         foundPlayer = false;
         followPlayerPos = false;
@@ -251,6 +253,8 @@ public class SquadBehavour : MonoBehaviour
 
     void Update()
     {
+        UpdatePlayerPosition();
+
         OneTwoFormation();
 
         if (followPlayerPos)
@@ -274,11 +278,6 @@ public class SquadBehavour : MonoBehaviour
                 p.GetComponent<ProtectorController>().targetPosition = MoveTargetPosition;
             }
         }
-    }
-
-    void LateUpdate()
-    {
-       UpdatePlayerPosition();
     }
 
     // Update player position
