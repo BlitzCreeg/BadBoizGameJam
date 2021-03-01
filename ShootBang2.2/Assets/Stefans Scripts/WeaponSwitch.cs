@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class WeaponSwitch : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
+
     public int selectedWeapon = 0;
+    public GameObject rifle;
 
     // Start is called before the first frame update
     void Start()
@@ -17,20 +20,28 @@ public class WeaponSwitch : MonoBehaviour
     {
         int previousSelectedWeapon = selectedWeapon;
 
-        if(Input.GetAxis("Mouse ScrollWheel") > 0f)
+        if(Input.GetAxis("Mouse ScrollWheel") > 0f && rifle.GetComponent<Rifl>().canUse)
         {
             if (selectedWeapon >= transform.childCount - 1)
                 selectedWeapon = 0;
             else
             selectedWeapon++;
+            playerAudioController.PlayRandomHandling();
         }
 
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f && rifle.GetComponent<Rifl>().canUse)
         {
             if (selectedWeapon <= 0)
                 selectedWeapon = transform.childCount - 1;
             else
                 selectedWeapon--;
+            playerAudioController.PlayRandomHandling();
+
+        }
+
+        if (rifle.GetComponent<Rifl>().canUse == false)
+        {
+            selectedWeapon = 0;
         }
 
         if (previousSelectedWeapon != selectedWeapon)

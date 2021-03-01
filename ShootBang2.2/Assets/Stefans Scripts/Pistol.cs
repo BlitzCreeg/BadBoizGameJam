@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pistol : MonoBehaviour
 {
+    public PlayerAudioController playerAudioController;
+
     public float damage = 10f;
     public float range = 50f;
     public float fireRate = 15f;
@@ -13,6 +15,7 @@ public class Pistol : MonoBehaviour
     public float charge = 50f;
 
     public bool isRunning = false;
+   // bool recharge;
 
     public Camera playerCam;
 
@@ -20,6 +23,7 @@ public class Pistol : MonoBehaviour
     public GameObject metalImpact;
     public GameObject woodImpact;
     public GameObject enemyImpact;
+    public GameObject pipeImpact;
 
     public ParticleSystem muzzleFlash;
 
@@ -39,6 +43,8 @@ public class Pistol : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
         {
+            playerAudioController.PistolShot();
+
             nextTimeToFire = Time.time + 1f / fireRate;
             if (charge >= 10f)
                 Shoot();
@@ -47,6 +53,7 @@ public class Pistol : MonoBehaviour
 
     public void Shoot()
     {
+       // recharge = false;
         charge -= 10f;
 
         muzzleFlash.Play();
@@ -55,7 +62,6 @@ public class Pistol : MonoBehaviour
 
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hit, range))
         {
-            Debug.Log(hit.transform.name);
 
             FighterHealth fighterHealth = hit.transform.GetComponent<FighterHealth>();
 
@@ -80,6 +86,10 @@ public class Pistol : MonoBehaviour
             {
                 Instantiate(enemyImpact, hit.point, Quaternion.LookRotation(hit.normal));
             }
+            else if (hit.transform.gameObject.CompareTag("Pipe"))
+            {
+                Instantiate(pipeImpact, hit.point, Quaternion.LookRotation(hit.normal));
+            }
             else
                 Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
 
@@ -96,19 +106,25 @@ public class Pistol : MonoBehaviour
         else if (charge < 0f)
             charge = 0f;
         else
-            charge += 4f;
+            charge += 1f;
     }
 
     IEnumerator rechargeWait()
     {
+        playerAudioController.PistolWait();
         isRunning = true;
         yield return new WaitForSeconds(3);
+       // recharge = true;
 
         while (charge < 50f || charge > 50f)
         {
-            yield return new WaitForSeconds(1f);
+            //if (recharge == false)
+           // {
+              //  break;
+            //}
+            yield return new WaitForSeconds(0.25f);
             Recharge();
+            playerAudioController.ChargeBeep();
         }
-        isRunning = false;
     }
 }

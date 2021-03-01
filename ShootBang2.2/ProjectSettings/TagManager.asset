@@ -12,9 +12,8 @@ TagManager:
   - Fighter
   - Protector
   - RiflePickUp
-  - Squad
-  - Scout
-  - PlayerPosition
+  - Pipe
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -28,7 +27,7 @@ TagManager:
   - ClimbEdge
   - ClimbCheck
   - Player
-  - 
+  - Vent
   - 
   - 
   - 

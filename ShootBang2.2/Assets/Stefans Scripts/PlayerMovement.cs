@@ -43,10 +43,12 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
+    public LayerMask ventCheck;
 
     Vector3 velocity;
 
     public bool isGrounded;
+    public bool isInVent;
     public bool canClimb;
 
     // DANNNNNNNNNNNYYYYYYYYYYYYYSSSSSSSSSSSSSSSS BOOOOOOLLLLLLLLSSSSSSSSSSS
@@ -63,9 +65,8 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         playerCam.fieldOfView = fov;
+        playerCam.transform.position = standCamPos.transform.position;
         height = controller.height;
-        //standCamPos.transform.position = new Vector3(controller.transform.position.x, controller.transform.position.y + height / 2.5f, controller.transform.position.z);
-        //crouchCamPos.transform.position = new Vector3(controller.transform.position.x, controller.transform.position.y + 0.2f, controller.transform.position.z);
     }
 
     // Update is called once per frame
@@ -93,12 +94,19 @@ public class PlayerMovement : MonoBehaviour
             isJumping = false;
             isClimbing = false;
         }
+
+        isInVent = Physics.CheckSphere(groundCheck.position, groundDistance, ventCheck);
+        if (isInVent)
+        {
+            isJumping = false;
+            isClimbing = false;
+        }
     }
 
     //Player Jump function
     public void Jump()
     {
-        if (isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0 || isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
@@ -114,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(move * speed * Time.deltaTime);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f && !isCrouching)
+        if (Input.GetButtonDown("Jump") && isGrounded && stamina >= 30f || Input.GetButtonDown("Jump") && isInVent && stamina >= 30f)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             stamina -= staminaJump;
@@ -211,6 +219,11 @@ public class PlayerMovement : MonoBehaviour
         {
             canClimb = true;
         }
+
+        if (other.gameObject.CompareTag("Door"))
+        {
+            other.gameObject.GetComponent<SingleDoor>().isPlayer = true;
+        }
     }
 
     public void OnTriggerExit(Collider other)
@@ -218,6 +231,12 @@ public class PlayerMovement : MonoBehaviour
         if (other.CompareTag("ClimbableEdge"))
         {
             canClimb = false;
+        }
+
+        if (other.gameObject.CompareTag("Door"))
+        {
+            other.gameObject.GetComponent<SingleDoor>().isPlayer = false;
+
         }
     }
 
