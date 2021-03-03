@@ -14,6 +14,10 @@ TagManager:
   - RiflePickUp
   - Pipe
   - Door
+  - PlayerGun
+  - PlayerPosition
+  - Squad
+  - Scout
   layers:
   - Default
   - TransparentFX
