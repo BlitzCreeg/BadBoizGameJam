@@ -185,8 +185,8 @@ Transform:
   - {fileID: 1781491373241541107}
   - {fileID: 5397733788407002423}
   - {fileID: 3641624602787598972}
-  - {fileID: 4661456267155932020}
   - {fileID: 246975164582949291}
+  - {fileID: 4867013460044636733}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -240,11 +240,11 @@ MonoBehaviour:
   moveTarget: {fileID: 6495041362418473452}
   currentPlayerPosition: {x: 0, y: 0, z: 0}
   updatingPlayerPosition: {x: 0, y: 0, z: 0}
-  stoppingDistanceProtectors: 3
-  stoppingDistanceFighters: 6
+  stoppingDistanceProtectors: 6
+  stoppingDistanceFighters: 9
   fighters:
   - {fileID: 3641624602787598968}
-  - {fileID: 4661456267155932016}
+  - {fileID: 4867013460044636729}
   protectors:
   - {fileID: 5397733788407002419}
   - {fileID: 246975164582949295}
@@ -308,7 +308,7 @@ PrefabInstance:
     - target: {fileID: 702768681325498254, guid: 5e16581e1ee62d74e8178f17c61d2304,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 702768681325498254, guid: 5e16581e1ee62d74e8178f17c61d2304,
         type: 3}
@@ -374,17 +374,22 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 769503103486688805}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &2944918229799971231
+--- !u!1001 &3163137402622757078
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 324126312540851888}
     m_Modifications:
+    - target: {fileID: 1060967542046895643, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
+        type: 3}
+      propertyPath: squadBehavour
+      value: 
+      objectReference: {fileID: 9106364961424768391}
     - target: {fileID: 7525130431601421035, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7525130431601421035, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
         type: 3}
@@ -443,17 +448,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e6744d6fdece7e4da22fe42776b8c5d, type: 3}
---- !u!1 &4661456267155932016 stripped
+--- !u!1 &4867013460044636729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7525130431601421039, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
     type: 3}
-  m_PrefabInstance: {fileID: 2944918229799971231}
+  m_PrefabInstance: {fileID: 3163137402622757078}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4661456267155932020 stripped
+--- !u!4 &4867013460044636733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7525130431601421035, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
     type: 3}
-  m_PrefabInstance: {fileID: 2944918229799971231}
+  m_PrefabInstance: {fileID: 3163137402622757078}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4839159771434220217
 PrefabInstance:
@@ -543,6 +548,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 324126312540851888}
     m_Modifications:
+    - target: {fileID: 1060967542046895643, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
+        type: 3}
+      propertyPath: squadBehavour
+      value: 
+      objectReference: {fileID: 9106364961424768391}
     - target: {fileID: 7525130431601421035, guid: 9e6744d6fdece7e4da22fe42776b8c5d,
         type: 3}
       propertyPath: m_RootOrder
