@@ -1288,11 +1288,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3493459838386260947, guid: 9475cf2f55a963f4482191984461f542,
-        type: 3}
-      propertyPath: m_TagString
-      value: BFG
-      objectReference: {fileID: 0}
     - target: {fileID: 4375857160577301652, guid: 9475cf2f55a963f4482191984461f542,
         type: 3}
       propertyPath: m_Name

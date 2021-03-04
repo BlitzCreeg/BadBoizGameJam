@@ -14,7 +14,6 @@ TagManager:
   - RiflePickUp
   - Pipe
   - Door
-  - BFG
   layers:
   - Default
   - TransparentFX

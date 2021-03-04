@@ -10,7 +10,7 @@ public class BFGPickUp : MonoBehaviour
 
     private void Start()
     {
-        rifle = GameObject.FindGameObjectWithTag("BFG");
+        rifle = GameObject.Find("BFG");
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,8 +18,8 @@ public class BFGPickUp : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerAudioController.PlayRandomHandling();
-            rifle.GetComponent<Rifl>().ammoCount = 30f;
-            rifle.gameObject.GetComponent<Rifl>().canUse = true;
+            rifle.GetComponentInChildren<Rifl>().ammoCount = 30f;
+            rifle.gameObject.GetComponentInChildren<Rifl>().canUse = true;
 
             Destroy(this.gameObject, 0.2f);
         }
