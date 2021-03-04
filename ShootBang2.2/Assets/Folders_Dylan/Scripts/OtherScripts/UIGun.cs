@@ -13,7 +13,7 @@ public class UIGun : MonoBehaviour
 
     void Start()
     {
-        ammoReference = GameObject.FindGameObjectWithTag("PlayerGun").GetComponent<Rifl>().ammoCount;
+        //ammoReference = GameObject.FindGameObjectWithTag("PlayerGun").GetComponent<Rifl>().ammoCount;
         ammoCount = ammoReference;
     }
 
