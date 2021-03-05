@@ -18,7 +18,7 @@ public class BFGPickUp : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerAudioController.PlayRandomHandling();
-            rifle.GetComponentInChildren<Rifl>().ammoCount = 30f;
+            rifle.GetComponentInChildren<Rifl>().ammoCount = 30;
             rifle.gameObject.GetComponentInChildren<Rifl>().canUse = true;
 
             Destroy(this.gameObject, 0.2f);

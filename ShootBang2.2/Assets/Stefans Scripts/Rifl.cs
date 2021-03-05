@@ -9,7 +9,7 @@ public class Rifl : MonoBehaviour
     public float damage = 30f;
     public float range = 100f;
     public float fireRate = 25f;
-    public float ammoCount = 30f;
+    public int ammoCount = 30;
 
     public AudioClip[] gunshotArray;
     public AudioClip gunEmpty;
@@ -31,6 +31,8 @@ public class Rifl : MonoBehaviour
 
     public Camera playerCam;
 
+    UIGun uIGun;
+
     public ParticleSystem muzzleFlash;
 
     // Update is called once per frame
@@ -40,14 +42,26 @@ public class Rifl : MonoBehaviour
             CheckFire();
     }
 
+    void CheckForUI()
+    {
+        if (!uIGun)
+        {
+            uIGun = GameObject.FindGameObjectWithTag("PlayerGun").GetComponent<UIGun>();
+        }
+    }
+
     public void CheckFire()
     {
         if (Input.GetKey(KeyCode.Mouse0) && Time.time >= nextTimeToFire) //take down away for fullauto
         {
+            // Check for gun UI
+            CheckForUI();
+
             nextTimeToFire = Time.time + 1f / fireRate;
-            if (ammoCount > 0f)
+            if (ammoCount > 0)
             {
                 ammoCount--;
+                uIGun.ammoCount++;
                 Shoot();
                 pitchMin = 0.9f;
                 pitchMax = 1.2f;
@@ -98,7 +112,11 @@ public class Rifl : MonoBehaviour
 
             if (hit.transform.gameObject.CompareTag("Stone"))
             {
-                Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
+                // Need to make instance of the impact game object in the scene
+                GameObject impact = Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
+
+                // Parent Decal
+                ParentDecal(impact, hit);
             }
             else if (hit.transform.gameObject.CompareTag("Metal"))
             {
@@ -120,5 +138,11 @@ public class Rifl : MonoBehaviour
                 Instantiate(stoneImpact, hit.point, Quaternion.LookRotation(hit.normal));
 
         }
+    }
+
+    void ParentDecal(GameObject decal, RaycastHit hitObject)
+    {
+        decal.transform.parent = hitObject.transform;
+        Debug.Log(hitObject.transform.name);
     }
 }

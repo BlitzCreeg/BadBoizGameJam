@@ -142,7 +142,7 @@ MonoBehaviour:
   damage: 30
   range: 100
   fireRate: 10
-  ammoCount: 30
+  ammoCount: 1000
   gunshotArray:
   - {fileID: 8300000, guid: e9ab94dfa8025684f8180467279eab93, type: 3}
   - {fileID: 8300000, guid: 37fd7520f565a514b86f2743f43c5e6c, type: 3}
@@ -156,7 +156,7 @@ MonoBehaviour:
   pipeImpact: {fileID: 100002, guid: 2b4ffdf4a64f87d4ca3c0de925e6d343, type: 3}
   rifleDrop: {fileID: 8961115330965227799, guid: 883943020de298e469c0a46b3f8c9804,
     type: 3}
-  canUse: 0
+  canUse: 1
   playerCam: {fileID: 4375857160003146792}
   muzzleFlash: {fileID: 4375857161413814061}
 --- !u!82 &4375857159788227647
@@ -10832,7 +10832,7 @@ PrefabInstance:
     - target: {fileID: 9059588262362951790, guid: a890c66a9e5053a469d81c6beb7fe7d9,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a890c66a9e5053a469d81c6beb7fe7d9, type: 3}
